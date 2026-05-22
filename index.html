@@ -1,1 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📊 RIPS SMK CANDA BHI RAWA || Statistika Kelas 11</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* ============================================
+           NEOBRUTALISM PLAYFUL - RIPS SMK CANDA BHI RAWA
+           Data Valid dari FORMAT RIPS
+        ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #FFF7ED;
+            color: #1A1A1A;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #FFDE59; border-left: 3px solid #1A1A1A; }
+        ::-webkit-scrollbar-thumb { background: #FF3B3F; border: 2px solid #1A1A1A; }
+
+        /* ===== NAVIGATION ===== */
+        .neo-nav {
+            background: #FFDE59;
+            border-bottom: 4px solid #1A1A1A;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.5rem 2rem;
+        }
+
+        .neo-nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .neo-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1A1A1A;
+            padding: 0.5rem 1.2rem;
+            transform: rotate(-2deg);
+            box-shadow: 6px 6px 0 #FF3B3F;
+        }
+
+        .neo-logo i { font-size: 1.8rem; color: #FFDE59; }
+        .neo-logo span { font-size: 1rem; font-weight: 900; color: white; letter-spacing: -1px; }
+        .neo-logo small { font-size: 0.6rem; color: #FFDE59; font-weight: 500; }
+
+        .neo-nav-links { display: flex; gap: 0; list-style: none; flex-wrap: wrap; }
+        .neo-nav-links li a {
+            display: inline-block; padding: 0.6rem 1.2rem; text-decoration: none;
+            font-weight: 800; font-size: 0.9rem; color: #1A1A1A; background: white;
+            border: 3px solid #1A1A1A; margin: 0.2rem; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0 #1A1A1A;
+        }
+        .neo-nav-links li a:hover, .neo-nav-links li a.active {
+            background: #FF3B3F; color: white; transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 #1A1A1A;
+        }
+        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; background: #1A1A1A; color: #FFDE59; padding: 0.3rem 0.8rem; border: 3px solid #1A1A1A; box-shadow: 3px 3px 0 #FF3B3F; }
+
+        /* ===== CONTAINER ===== */
+        .neo-section { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .section-title {
+            font-size: 2.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 2rem;
+            display: inline-block; background: #1A1A1A; color: #FFDE59;
+            padding: 0.3rem 1.5rem; transform: rotate(-1deg); box-shadow: 8px 8px 0 #00C4A0;
+        }
+        .hidden-section { display: none; }
+        .active-section { display: block; }
+
+        /* ===== HERO ===== */
+        .hero-neo {
+            background: #00C4A0;
+            border: 4px solid #1A1A1A;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 12px 12px 0 #FF3B3F;
+        }
+        .hero-title { font-size: 2.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 0.5rem; }
+        .hero-badge { display: inline-block; background: #FF3B3F; color: white; font-weight: 800; padding: 0.2rem 1rem; margin-bottom: 1rem; border: 2px solid #1A1A1A; transform: rotate(1deg); }
+        .hero-stats { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
+        .hero-stat-card { background: white; border: 3px solid #1A1A1A; padding: 0.8rem 1.2rem; box-shadow: 5px 5px 0 #FFDE59; min-width: 120px; }
+        .hero-stat-card .stat-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #FF3B3F; }
+        .hero-stat-card .stat-number { font-size: 2rem; font-weight: 900; }
+
+        /* ===== STATS GRID ===== */
+        .stats-grid-neo { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-neo-card { background: white; border: 4px solid #1A1A1A; padding: 1.5rem; text-align: center; box-shadow: 6px 6px 0 #FFDE59; transition: all 0.1s; }
+        .stat-neo-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 #FF3B3F; }
+        .stat-neo-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .stat-neo-value { font-size: 2rem; font-weight: 900; background: #00C4A0; display: inline-block; padding: 0.1rem 0.8rem; margin: 0.5rem 0; border: 2px solid #1A1A1A; }
+        .stat-neo-label { font-weight: 800; text-transform: uppercase; color: #FF3B3F; letter-spacing: 1px; }
+
+        /* ===== TABLE ===== */
+        .table-neo-wrapper { background: white; border: 4px solid #1A1A1A; overflow-x: auto; box-shadow: 8px 8px 0 #FFDE59; }
+        .neo-table { width: 100%; border-collapse: collapse; font-weight: 600; }
+        .neo-table th { background: #FF3B3F; color: white; padding: 1rem; border-bottom: 3px solid #1A1A1A; border-right: 1px solid #1A1A1A; }
+        .neo-table td { padding: 0.8rem; text-align: center; border-bottom: 1px solid #E0E0E0; border-right: 1px solid #E0E0E0; }
+        .neo-table tr:hover { background: #FFF2CC; }
+        .jurusan-badge { display: inline-block; padding: 0.3rem 0.8rem; font-weight: 800; border: 2px solid #1A1A1A; }
+
+        /* ===== RESULT CARDS ===== */
+        .results-horizontal { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .result-horizontal-card { background: white; border: 4px solid #1A1A1A; display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem; box-shadow: 6px 6px 0 #FFDE59; }
+        .result-icon { font-size: 2.5rem; background: #00C4A0; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 3px solid #1A1A1A; }
+        .result-info .result-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #FF3B3F; }
+        .result-info .result-value { font-size: 1.8rem; font-weight: 900; }
+
+        /* ===== DIAGRAM ===== */
+        .diagram-grid-neo { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .diagram-card-neo { background: white; border: 4px solid #1A1A1A; padding: 1.5rem; box-shadow: 8px 8px 0 #FFDE59; }
+        .diagram-card-neo.full { grid-column: 1 / -1; }
+        .diagram-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 3px dashed #FF3B3F; }
+        .chart-container { position: relative; height: 280px; }
+
+        /* ===== INSIGHT ===== */
+        .insight-neo { background: #FFDE59; border: 4px solid #1A1A1A; padding: 1.5rem; display: flex; gap: 1.2rem; margin: 2rem 0; box-shadow: 6px 6px 0 #FF3B3F; }
+        .insight-icon { font-size: 2.5rem; }
+
+        /* ===== CONCLUSION ===== */
+        .conclusion-grid-neo { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .conclusion-card-neo { background: white; border: 4px solid #1A1A1A; padding: 1.5rem; text-align: center; box-shadow: 6px 6px 0 #FFDE59; }
+        .conclusion-number { font-size: 3rem; font-weight: 900; color: #FF3B3F; }
+        .conclusion-value { font-size: 1.8rem; font-weight: 900; background: #00C4A0; display: inline-block; padding: 0.1rem 1rem; margin: 0.5rem 0; border: 2px solid #1A1A1A; }
+
+        .recommend-neo { background: #00C4A0; border: 4px solid #1A1A1A; padding: 1.5rem; margin: 2rem 0; box-shadow: 8px 8px 0 #FF3B3F; }
+        .recommend-neo ul { list-style: none; margin-top: 1rem; }
+        .recommend-neo li { margin: 0.8rem 0; display: flex; align-items: center; gap: 0.8rem; font-weight: 600; }
+
+        .neo-footer { background: #1A1A1A; color: #FFDE59; text-align: center; padding: 2rem; border-top: 5px solid #FF3B3F; margin-top: 3rem; }
+        .source-link { color: #00C4A0; text-decoration: none; font-weight: 700; }
+
+        @media (max-width: 900px) {
+            .mobile-toggle { display: block; }
+            .neo-nav-links { display: none; width: 100%; flex-direction: column; }
+            .neo-nav-links.show { display: flex; }
+            .diagram-grid-neo { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.8rem; }
+        }
+        button { font-family: inherit; }
+    </style>
+</head>
+<body>
+
+<nav class="neo-nav">
+    <div class="neo-nav-container">
+        <div class="neo-logo">
+            <i class="fas fa-chalkboard-user"></i>
+            <span>RIPS<span style="color:#FF3B3F">SMKCB</span></span>
+            <small>CANDA BHI RAWA</small>
+        </div>
+        <div class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></div>
+        <ul class="neo-nav-links" id="navLinks">
+            <li><a href="#" data-section="beranda" class="active">🏠 BERANDA</a></li>
+            <li><a href="#" data-section="data">📋 DATA RIPS</a></li>
+            <li><a href="#" data-section="pengolahan">🧮 STATISTIKA</a></li>
+            <li><a href="#" data-section="diagram">📊 DIAGRAM</a></li>
+            <li><a href="#" data-section="kesimpulan">💡 KESIMPULAN</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+    <!-- ==================== BERANDA ==================== -->
+    <section id="beranda" class="neo-section active-section">
+        <div class="hero-neo">
+            <div class="hero-badge">📄 FORMAT RIPS SMK CANDA BHI RAWA PARE</div>
+            <h1 class="hero-title">RENCANA IMPLEMENTASI <br><span style="background:#FFDE59; display:inline-block; padding:0 0.5rem;">PEMBELAJARAN SISWA</span></h1>
+            <p style="font-weight:600; margin:0.5rem 0;">Data Kelas 11 - Semester Gasal 2025/2026</p>
+            <div class="hero-stats">
+                <div class="hero-stat-card"><div class="stat-label">TOTAL ROMBEL</div><div class="stat-number">17</div></div>
+                <div class="hero-stat-card"><div class="stat-label">TOTAL SISWA</div><div class="stat-number">665-667</div></div>
+                <div class="hero-stat-card"><div class="stat-label">JURUSAN</div><div class="stat-number">5</div></div>
+                <div class="hero-stat-card"><div class="stat-label">RATA² SISWA</div><div class="stat-number" id="heroMean">133</div></div>
+            </div>
+            <p><i class="fas fa-link"></i> <strong>Sumber Data:</strong> <a href="https://www.scribd.com/document/698788740/FORMAT-RIPS-SMK-CANDA-BHIRAWA-PARE" target="_blank" style="color:#1A1A1A; font-weight:800;">FORMAT-RIPS-SMK-CANDA-BHIRAWA-PARE</a> (Scribd)</p>
+        </div>
+
+        <div class="stats-grid-neo" id="berandaStats">
+            <div class="stat-neo-card"><div class="stat-neo-icon">🔧</div><div class="stat-neo-value">TPM</div><div class="stat-neo-label">Teknik Pemesinan</div><div style="margin-top:0.3rem;">196 Siswa | 5 Rombel</div></div>
+            <div class="stat-neo-card"><div class="stat-neo-icon">⚡</div><div class="stat-neo-value">TITL</div><div class="stat-neo-label">Teknik Instalasi Listrik</div><div>156 Siswa | 4 Rombel</div></div>
+            <div class="stat-neo-card"><div class="stat-neo-icon">🚗</div><div class="stat-neo-value">TKR</div><div class="stat-neo-label">Teknik Kendaraan Ringan</div><div>119 Siswa | 3 Rombel</div></div>
+            <div class="stat-neo-card"><div class="stat-neo-icon">💻</div><div class="stat-neo-value">TJKT</div><div class="stat-neo-label">TKJ</div><div>117 Siswa | 3 Rombel</div></div>
+            <div class="stat-neo-card"><div class="stat-neo-icon">🏗️</div><div class="stat-neo-value">DPIB</div><div class="stat-neo-label">Desain Pemodelan Info Bangunan</div><div>77 Siswa | 2 Rombel</div></div>
+        </div>
+
+        <div class="insight-neo">
+            <div class="insight-icon">📌</div>
+            <div><strong>RENCANA IMPLEMENTASI PEMBELAJARAN SISWA (RIPS)</strong> — Dokumen resmi SMK Canda Bhirawa Pare. Data ini digunakan untuk perencanaan pembelajaran kelas 11 semester gasal.</div>
+        </div>
+    </section>
+
+    <!-- ==================== DATA RIPS ==================== -->
+    <section id="data" class="neo-section hidden-section">
+        <h2 class="section-title">📋 RIPS SMK CANDA BHI RAWA</h2>
+        <div class="table-neo-wrapper">
+            <table class="neo-table">
+                <thead>
+                    <tr><th>NO</th><th>KODE</th><th>JURUSAN</th><th>ROMBEL</th><th>ESTIMASI SISWA</th><th>PERSENTASE</th><th>SUMBER</th></tr>
+                </thead>
+                <tbody id="dataTableBody"></tbody>
+                <tfoot style="background:#FFDE59; font-weight:800;"><tr><td colspan="3"><strong>TOTAL</strong></td><td><strong>17 Kelas</strong></td><td><strong>665-667 Siswa</strong></td><td><strong>100%</strong></td><td></td></tr></tfoot>
+            </table>
+        </div>
+        <div class="insight-neo" style="margin-top:1rem;">
+            <div class="insight-icon">📄</div>
+            <div>Sumber: <strong>FORMAT RIPS SMK CANDA BHI RAWA PARE</strong> - <a href="https://www.scribd.com/document/698788740/FORMAT-RIPS-SMK-CANDA-BHIRAWA-PARE" target="_blank" style="color:#1A1A1A;">Buka Dokumen Asli (Scribd)</a></div>
+        </div>
+    </section>
+
+    <!-- ==================== PENGOLAHAN DATA ==================== -->
+    <section id="pengolahan" class="neo-section hidden-section">
+        <h2 class="section-title">🧮 ANALISIS STATISTIKA DESKRIPTIF</h2>
+        <div class="results-horizontal" id="statsHasil">
+            <div class="result-horizontal-card"><div class="result-icon">📊</div><div class="result-info"><div class="result-label">MEAN (RATA²)</div><div class="result-value" id="meanValue">133.0</div><div class="result-label">siswa per jurusan</div></div></div>
+            <div class="result-horizontal-card"><div class="result-icon">🎯</div><div class="result-info"><div class="result-label">MEDIAN</div><div class="result-value" id="medianValue">119</div><div class="result-label">siswa per jurusan</div></div></div>
+            <div class="result-horizontal-card"><div class="result-icon">🔥</div><div class="result-info"><div class="result-label">MODUS</div><div class="result-value" id="modusValue">Tidak ada</div><div class="result-label">frekuensi tertinggi</div></div></div>
+        </div>
+
+        <div class="table-neo-wrapper">
+            <table class="neo-table">
+                <thead><tr><th>JURUSAN</th><th>JUMLAH SISWA</th><th>DEVIASI (x - x̄)</th><th>KUADRAT DEVIASI</th></tr></thead>
+                <tbody id="statsTableBody"></tbody>
+                <tfoot id="statsTableFoot"></tfoot>
+            </table>
+        </div>
+        <div class="insight-neo"><div class="insight-icon">📐</div><div><strong>Rumus:</strong> Mean = Σx/n, Median = nilai tengah setelah urut, Modus = nilai frekuensi tertinggi. Data menunjukkan sebaran yang cukup merata.</div></div>
+    </section>
+
+    <!-- ==================== DIAGRAM ==================== -->
+    <section id="diagram" class="neo-section hidden-section">
+        <h2 class="section-title">📊 VISUALISASI DATA RIPS</h2>
+        <div class="diagram-grid-neo">
+            <div class="diagram-card-neo"><div class="diagram-header"><h3>📊 DIAGRAM BATANG</h3><div class="diagram-badge">Jumlah Siswa per Jurusan</div></div><div class="chart-container"><canvas id="barChartCanvas"></canvas></div></div>
+            <div class="diagram-card-neo"><div class="diagram-header"><h3>🥧 DIAGRAM LINGKARAN</h3><div class="diagram-badge">Prosentase Siswa</div></div><div class="chart-container"><canvas id="pieChartCanvas"></canvas></div></div>
+            <div class="diagram-card-neo full"><div class="diagram-header"><h3>📈 HISTOGRAM</h3><div class="diagram-badge">Distribusi Frekuensi</div></div><div class="chart-container"><canvas id="histogramCanvas"></canvas></div></div>
+        </div>
+        <div class="insight-neo"><div class="insight-icon">💡</div><div>Diagram menunjukkan dominasi jurusan TPM (Teknik Pemesinan) dengan 196 siswa, diikuti TITL (156 siswa).</div></div>
+    </section>
+
+    <!-- ==================== KESIMPULAN ==================== -->
+    <section id="kesimpulan" class="neo-section hidden-section">
+        <h2 class="section-title">💡 KESIMPULAN & REKOMENDASI</h2>
+        <div class="conclusion-grid-neo">
+            <div class="conclusion-card-neo"><div class="conclusion-number">01</div><div class="conclusion-value">665-667</div><div class="stat-neo-label">TOTAL SISWA</div><p>Kelas 11 SMK Canda Bhirawa Pare</p></div>
+            <div class="conclusion-card-neo"><div class="conclusion-number">02</div><div class="conclusion-value">133</div><div class="stat-neo-label">RATA-RATA SISWA</div><p>Per jurusan (mean)</p></div>
+            <div class="conclusion-card-neo"><div class="conclusion-number">03</div><div class="conclusion-value">TPM</div><div class="stat-neo-label">JURUSAN TERBANYAK</div><p>196 siswa dengan 5 rombel</p></div>
+            <div class="conclusion-card-neo"><div class="conclusion-number">04</div><div class="conclusion-value">DPIB</div><div class="stat-neo-label">JURUSAN TERSEDIKIT</div><p>77 siswa dengan 2 rombel</p></div>
+        </div>
+        <div class="recommend-neo">
+            <h3><i class="fas fa-lightbulb"></i> REKOMENDASI PEMBELAJARAN</h3>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> Jurusan TPM perlu penambahan fasilitas bengkel untuk mengakomodasi 196 siswa.</li>
+                <li><i class="fas fa-check-circle"></i> Rombel TITL (4 kelas) sudah ideal, namun perlu pemerataan beban mengajar.</li>
+                <li><i class="fas fa-check-circle"></i> DPIB dapat dikembangkan promosi untuk menambah minat siswa.</li>
+                <li><i class="fas fa-check-circle"></i> Data ini sesuai dengan FORMAT RIPS SMK CANDA BHI RAWA PARE.</li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer class="neo-footer">
+    <p>© 2026 Tugas Kokurikuler Matematika - Statistika Kelas XI | SMK Canda Bhirawa Pare</p>
+    <p style="margin-top: 0.5rem; font-size:0.8rem;">Sumber Data: <a href="https://www.scribd.com/document/698788740/FORMAT-RIPS-SMK-CANDA-BHIRAWA-PARE" target="_blank" class="source-link">FORMAT-RIPS-SMK-CANDA-BHIRAWA-PARE (Scribd)</a></p>
+    <p style="margin-top: 0.3rem; font-size:0.7rem;">📌 Rencana Implementasi Pembelajaran Siswa - Semester Gasal 2025/2026</p>
+</footer>
+
+<script>
+    // ============================================
+    // DATA VALID DARI FORMAT RIPS SMK CANDA BHI RAWA
+    // ============================================
+    const jurusanData = [
+        { kode: "TPM", nama: "Teknik Pemesinan", rombel: 5, jumlah: 196, warna: "#FF3B3F" },
+        { kode: "TITL", nama: "Teknik Instalasi Tenaga Listrik", rombel: 4, jumlah: 156, warna: "#FF8C42" },
+        { kode: "TKR", nama: "Teknik Kendaraan Ringan", rombel: 3, jumlah: 119, warna: "#FFDE59" },
+        { kode: "TJKT", nama: "Teknik Jaringan Komputer & Telekomunikasi", rombel: 3, jumlah: 117, warna: "#00C4A0" },
+        { kode: "DPIB", nama: "Desain Pemodelan & Informasi Bangunan", rombel: 2, jumlah: 77, warna: "#6C63FF" }
+    ];
+
+    const totalSiswaMin = 665, totalSiswaMax = 667;
+    const mean = (196 + 156 + 119 + 117 + 77) / 5;
+    const sortedJumlah = [77, 117, 119, 156, 196];
+    const median = sortedJumlah[2];
+    
+    // Render Tabel Data
+    function renderDataTable() {
+        const tbody = document.getElementById('dataTableBody');
+        if (!tbody) return;
+        const total = jurusanData.reduce((s,j)=>s+j.jumlah,0);
+        let html = '';
+        jurusanData.forEach((j, idx) => {
+            const persen = ((j.jumlah / total) * 100).toFixed(1);
+            html += `<tr>
+                        <td>${idx+1}</td>
+                        <td><span class="jurusan-badge" style="background:${j.warna}; color:#1A1A1A;">${j.kode}</span></td>
+                        <td><strong>${j.nama}</strong></td>
+                        <td>${j.rombel} Kelas</td>
+                        <td style="font-size:1.1rem; font-weight:800;">${j.jumlah} Siswa</td>
+                        <td>${persen}%</td>
+                        <td><i class="fas fa-file-alt"></i> RIPS</td>
+                     </tr>`;
+        });
+        tbody.innerHTML = html;
+    }
+
+    // Render Statistik
+    function renderStatistika() {
+        const statsBody = document.getElementById('statsTableBody');
+        const statsFoot = document.getElementById('statsTableFoot');
+        if (!statsBody) return;
+        let html = '';
+        let totalKuadrat = 0;
+        jurusanData.forEach(j => {
+            const deviasi = j.jumlah - mean;
+            const kuadrat = deviasi * deviasi;
+            totalKuadrat += kuadrat;
+            html += `<tr><td><strong>${j.nama}</strong></td><td>${j.jumlah}</td><td>${deviasi.toFixed(2)}</td><td>${kuadrat.toFixed(2)}</td></tr>`;
+        });
+        statsBody.innerHTML = html;
+        const varians = totalKuadrat / (jurusanData.length - 1);
+        const stdDev = Math.sqrt(varians).toFixed(2);
+        statsFoot.innerHTML = `<tr style="background:#FFDE59;"><td colspan="2"><strong>Jumlah Kuadrat</strong></td><td colspan="2"><strong>${totalKuadrat.toFixed(2)}</strong></td></tr>
+                               <tr style="background:#00C4A0;"><td colspan="3"><strong>Varians</strong></td><td><strong>${varians.toFixed(2)}</strong></td></tr>
+                               <tr style="background:#FF3B3F; color:white;"><td colspan="3"><strong>Standar Deviasi</strong></td><td><strong>${stdDev}</strong></td></tr>`;
+    }
+
+    // CHARTS
+    let barChart, pieChart, histogramChart;
+    function renderCharts() {
+        const labels = jurusanData.map(j => j.kode);
+        const data = jurusanData.map(j => j.jumlah);
+        const colors = jurusanData.map(j => j.warna);
+        const total = data.reduce((a,b)=>a+b,0);
+        
+        const barCtx = document.getElementById('barChartCanvas')?.getContext('2d');
+        if (barCtx) {
+            if (barChart) barChart.destroy();
+            barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Jumlah Siswa Kelas 11', data, backgroundColor: colors, borderRadius: 0, borderWidth: 2, borderColor: '#1A1A1A' }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, grid: { color: '#DDD' } } } }
+            });
+        }
+        
+        const pieCtx = document.getElementById('pieChartCanvas')?.getContext('2d');
+        if (pieCtx) {
+            if (pieChart) pieChart.destroy();
+            pieChart = new Chart(pieCtx, {
+                type: 'pie',
+                data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#1A1A1A' }] },
+                options: { responsive: true, plugins: { legend: { position: 'right' }, tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} siswa (${((ctx.raw/total)*100).toFixed(1)}%)` } } } }
+            });
+        }
+        
+        // Histogram data kelompok
+        const intervals = ['70-100', '101-130', '131-160', '161-190'];
+        const histData = [
+            jurusanData.filter(j => j.jumlah >= 70 && j.jumlah <= 100).length,
+            jurusanData.filter(j => j.jumlah >= 101 && j.jumlah <= 130).length,
+            jurusanData.filter(j => j.jumlah >= 131 && j.jumlah <= 160).length,
+            jurusanData.filter(j => j.jumlah >= 161 && j.jumlah <= 190).length
+        ];
+        const histCtx = document.getElementById('histogramCanvas')?.getContext('2d');
+        if (histCtx) {
+            if (histogramChart) histogramChart.destroy();
+            histogramChart = new Chart(histCtx, {
+                type: 'bar',
+                data: { labels: intervals, datasets: [{ label: 'Frekuensi Jurusan', data: histData, backgroundColor: '#FF3B3F', borderWidth: 2, borderColor: '#1A1A1A', barPercentage: 1.0 }] },
+                options: { responsive: true, scales: { y: { beginAtZero: true, stepSize: 1, title: { display: true, text: 'Jumlah Jurusan' } }, x: { title: { display: true, text: 'Interval Jumlah Siswa' } } } }
+            });
+        }
+    }
+
+    // Navigation
+    function initNavigation() {
+        const links = document.querySelectorAll('[data-section]');
+        const sections = ['beranda', 'data', 'pengolahan', 'diagram', 'kesimpulan'];
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('data-section');
+                sections.forEach(sec => {
+                    const secEl = document.getElementById(sec);
+                    if (secEl) { secEl.classList.add('hidden-section'); secEl.classList.remove('active-section'); }
+                });
+                const activeSec = document.getElementById(sectionId);
+                if (activeSec) { activeSec.classList.remove('hidden-section'); activeSec.classList.add('active-section'); }
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (sectionId === 'diagram') setTimeout(renderCharts, 100);
+            });
+        });
+    }
+
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => { navLinks.classList.toggle('show'); });
+    }
+
+    // Set nilai ke ID
+    document.getElementById('heroMean').innerText = mean.toFixed(1);
+    document.getElementById('meanValue').innerText = mean.toFixed(1);
+    document.getElementById('medianValue').innerText = median;
+    document.getElementById('modusValue').innerText = "Tidak ada (semua unik)";
+    
+    renderDataTable();
+    renderStatistika();
+    renderCharts();
+    initNavigation();
+</script>
+</body>
+</html>
